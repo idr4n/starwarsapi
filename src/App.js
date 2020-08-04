@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container } from 'semantic-ui-react';
+import { Container, Header, Grid } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 
 import Navbar from './components/Navbar';
@@ -11,9 +11,23 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Star Wars Info</h1>
-      <Navbar page={page} setPage={setPage} />
-      <Container>{page === 'planets' ? <Planets /> : <People />}</Container>
+      <Container text>
+        <Header
+          as="h1"
+          textAlign="center"
+          content="Star Wars Info"
+          style={{
+            fontSize: '3em',
+            margin: '0.5em 0em',
+          }}
+        />
+      </Container>
+      <Grid style={{ maxWidth: 700, margin: '0 auto' }}>
+        <Grid.Column style={{ margin: '0 20px' }}>
+          <Navbar page={page} setPage={setPage} />
+          {page === 'planets' ? <Planets /> : <People />}
+        </Grid.Column>
+      </Grid>
     </div>
   );
 }
