@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePaginatedQuery } from 'react-query';
 import { Message, Loader, Segment, Pagination } from 'semantic-ui-react';
 import Person from './Person';
@@ -9,11 +9,19 @@ const fetchPeople = async (_key, page) => {
 };
 
 const People = () => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(() => {
+    const localPageNumPeople = localStorage.getItem('pageNumPeople');
+    return localPageNumPeople ? parseInt(localPageNumPeople) : 1;
+  });
+
   const { resolvedData, status } = usePaginatedQuery(
     ['people', page],
     fetchPeople
   );
+
+  useEffect(() => {
+    localStorage.setItem('pageNumPeople', page.toString());
+  }, [page]);
 
   let pages = null;
   if (status === 'success') {

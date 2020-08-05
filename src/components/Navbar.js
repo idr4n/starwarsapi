@@ -1,21 +1,21 @@
 import React from 'react';
 import { Button, Menu } from 'semantic-ui-react';
 
-const Navbar = ({ page, setPage }) => {
+const Navbar = ({ page, handlePage }) => {
   return (
     <Menu size="large">
       <Menu.Menu position="right">
         <Menu.Item
           name="planets"
           active={page === 'planets'}
-          onClick={() => setPage('planets')}
+          onClick={() => handlePage('planets')}
         >
           <Button secondary>Planets</Button>
         </Menu.Item>
         <Menu.Item
           name="people"
           active={page === 'people'}
-          onClick={() => setPage('people')}
+          onClick={() => handlePage('people')}
         >
           <Button secondary>People</Button>
         </Menu.Item>

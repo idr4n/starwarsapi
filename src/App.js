@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { Container, Header, Grid } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { ReactQueryDevtools } from 'react-query-devtools';
@@ -8,7 +8,18 @@ import Planets from './components/Planets';
 import People from './components/People';
 
 function App() {
-  const [page, setPage] = useState('planets');
+  const [page, setPage] = useState(() => {
+    const localPage = localStorage.getItem('page');
+    return localPage ? localPage : '';
+  });
+
+  const handlePage = (page) => {
+    setPage(page);
+  };
+
+  useEffect(() => {
+    localStorage.setItem('page', page);
+  }, [page]);
 
   return (
     <Fragment>
@@ -26,7 +37,7 @@ function App() {
         </Container>
         <Grid style={{ maxWidth: 700, margin: '0 auto' }}>
           <Grid.Column style={{ margin: '0 20px' }}>
-            <Navbar page={page} setPage={setPage} />
+            <Navbar page={page} handlePage={handlePage} />
             {page === 'planets' ? <Planets /> : <People />}
           </Grid.Column>
         </Grid>

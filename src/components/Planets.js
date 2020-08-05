@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePaginatedQuery } from 'react-query';
 import {
   Message,
@@ -16,11 +16,19 @@ const fetchPlanets = async (_key, page) => {
 };
 
 const Planets = () => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(() => {
+    const localPageNumPlanets = localStorage.getItem('pageNumPlanets');
+    return localPageNumPlanets ? parseInt(localPageNumPlanets) : 1;
+  });
+
   const { resolvedData, latestData, status } = usePaginatedQuery(
     ['planets', page],
     fetchPlanets
   );
+
+  useEffect(() => {
+    localStorage.setItem('pageNumPlanets', page.toString());
+  }, [page]);
 
   let pages = null;
   if (status === 'success') {
