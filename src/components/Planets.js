@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useQuery } from 'react-query';
-import { Message, Loader, Button } from 'semantic-ui-react';
+import { usePaginatedQuery } from 'react-query';
+import { Message, Loader, Button, Segment, Label } from 'semantic-ui-react';
 import Planet from './Planet';
 
 const fetchPlanets = async (_key, page) => {
@@ -10,23 +10,14 @@ const fetchPlanets = async (_key, page) => {
 
 const Planets = () => {
   const [page, setPage] = useState(1);
-  const { data, status } = useQuery(['planets', page], fetchPlanets, {
-    retry: 1,
-  });
+  const { resolvedData, latestData, status } = usePaginatedQuery(
+    ['planets', page],
+    fetchPlanets
+  );
 
   return (
     <div>
       <h2>Planets</h2>
-
-      <Button size="small" onClick={() => setPage(1)}>
-        page 1
-      </Button>
-      <Button size="small" onClick={() => setPage(2)}>
-        page 2
-      </Button>
-      <Button size="small" onClick={() => setPage(3)}>
-        page 3
-      </Button>
 
       {status === 'error' && (
         <Message negative>
@@ -40,11 +31,33 @@ const Planets = () => {
         </Loader>
       )}
       {status === 'success' && (
-        <div>
-          {data.results.map((planet) => (
-            <Planet key={planet.name} planet={planet} />
-          ))}
-        </div>
+        <>
+          <Segment>
+            <Button
+              style={{ margin: 0 }}
+              onClick={() => setPage((old) => Math.max(old - 1, 1))}
+              disabled={page === 1}
+            >
+              Previous page
+            </Button>
+            <Label style={{ margin: '0 5px' }}>{page}</Label>
+            <Button
+              onClick={() =>
+                setPage((old) =>
+                  !latestData || !latestData.next ? old : old + 1
+                )
+              }
+              disabled={!latestData || !latestData.next}
+            >
+              Next page
+            </Button>
+          </Segment>
+          <div>
+            {resolvedData.results.map((planet) => (
+              <Planet key={planet.name} planet={planet} />
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
