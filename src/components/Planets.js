@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { usePaginatedQuery } from 'react-query';
-import { Message, Loader, Button, Segment, Label } from 'semantic-ui-react';
+import {
+  Message,
+  Loader,
+  Button,
+  Segment,
+  Label,
+  Pagination,
+} from 'semantic-ui-react';
 import Planet from './Planet';
 
 const fetchPlanets = async (_key, page) => {
@@ -14,6 +21,17 @@ const Planets = () => {
     ['planets', page],
     fetchPlanets
   );
+
+  let pages = null;
+  if (status === 'success') {
+    const count = resolvedData.count;
+    const results = resolvedData.results.length;
+    pages = Math.ceil(count / results);
+  }
+
+  const handlePaginationChange = (_e, { activePage }) => {
+    setPage(activePage);
+  };
 
   return (
     <div>
@@ -32,6 +50,14 @@ const Planets = () => {
       )}
       {status === 'success' && (
         <>
+          <Segment>
+            <Pagination
+              boundaryRange={null}
+              activePage={page}
+              onPageChange={handlePaginationChange}
+              totalPages={pages}
+            />
+          </Segment>
           <Segment>
             <Button
               style={{ margin: 0 }}

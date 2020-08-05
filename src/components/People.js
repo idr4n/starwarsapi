@@ -1,15 +1,29 @@
-import React from 'react';
-import { useQuery } from 'react-query';
-import { Message, Loader } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { usePaginatedQuery } from 'react-query';
+import { Message, Loader, Segment, Pagination } from 'semantic-ui-react';
 import Person from './Person';
 
-const fetchPeople = async () => {
-  const res = await fetch('https://swapi.dev/api/people/');
+const fetchPeople = async (_key, page) => {
+  const res = await fetch(`https://swapi.dev/api/people/?page=${page}`);
   return res.json();
 };
 
 const People = () => {
-  const { data, status } = useQuery('people', fetchPeople);
+  const [page, setPage] = useState(1);
+  const { resolvedData, latestData, status } = usePaginatedQuery(
+    ['people', page],
+    fetchPeople
+  );
+
+  let pages = null;
+  if (status === 'success') {
+    const count = resolvedData.count;
+    pages = Math.ceil(count / 10);
+  }
+
+  const handlePaginationChange = (_e, { activePage }) => {
+    setPage(activePage);
+  };
 
   return (
     <div>
@@ -27,11 +41,21 @@ const People = () => {
         </Loader>
       )}
       {status === 'success' && (
-        <div>
-          {data.results.map((person) => (
-            <Person key={person.name} person={person} />
-          ))}
-        </div>
+        <>
+          <Segment>
+            <Pagination
+              boundaryRange={null}
+              activePage={page}
+              onPageChange={handlePaginationChange}
+              totalPages={pages}
+            />
+          </Segment>
+          <div>
+            {resolvedData.results.map((person) => (
+              <Person key={person.name} person={person} />
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
