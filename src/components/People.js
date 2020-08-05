@@ -10,7 +10,7 @@ const fetchPeople = async (_key, page) => {
 
 const People = () => {
   const [page, setPage] = useState(1);
-  const { resolvedData, latestData, status } = usePaginatedQuery(
+  const { resolvedData, status } = usePaginatedQuery(
     ['people', page],
     fetchPeople
   );
