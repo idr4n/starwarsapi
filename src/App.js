@@ -1,7 +1,7 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import { Container, Header, Grid } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
-import { ReactQueryDevtools } from 'react-query-devtools';
+// import { ReactQueryDevtools } from 'react-query-devtools';
 
 import Navbar from './components/Navbar';
 import Planets from './components/Planets';
@@ -42,7 +42,7 @@ function App() {
           </Grid.Column>
         </Grid>
       </div>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </Fragment>
   );
 }
