@@ -1,23 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { Message, Loader } from 'semantic-ui-react';
+import { Message, Loader, Button } from 'semantic-ui-react';
 import Planet from './Planet';
 
-const fetchPlanets = async () => {
-  const res = await fetch('https://swapi.dev/api/planets/');
+const fetchPlanets = async (_key, page) => {
+  const res = await fetch(`https://swapi.dev/api/planets/?page=${page}`);
   return res.json();
 };
 
 const Planets = () => {
-  const { data, status } = useQuery('planets', fetchPlanets, {
-    staleTime: 2000,
+  const [page, setPage] = useState(1);
+  const { data, status } = useQuery(['planets', page], fetchPlanets, {
     retry: 1,
-    onSuccess: () => console.log('data fetched without problems!'),
   });
 
   return (
     <div>
       <h2>Planets</h2>
+
+      <Button size="small" onClick={() => setPage(1)}>
+        page 1
+      </Button>
+      <Button size="small" onClick={() => setPage(2)}>
+        page 2
+      </Button>
+      <Button size="small" onClick={() => setPage(3)}>
+        page 3
+      </Button>
 
       {status === 'error' && (
         <Message negative>
