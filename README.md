@@ -1,6 +1,6 @@
 # Simple React app using the Star Wars API and Semantic UI React
 
-This app is based on The Net Ninja's tutorial on [React Query](https://www.youtube.com/playlist?list=PL4cUxeGkcC9jpi7Ptjl5b50p9gLjOFani), **with few additions**:
+This app is based on The Net Ninja's tutorial on [React Query](https://www.youtube.com/playlist?list=PL4cUxeGkcC9jpi7Ptjl5b50p9gLjOFani), using the [Star Wars API](https://swapi.dev/), **with few additions**:
 
 - The whole UI is implemented using [Semantic UI React](https://react.semantic-ui.com/)
 - Slight improvement in pagination using the Semantic UI React `Pagination` component.
