@@ -7,4 +7,4 @@ This app is based on The Net Ninja's tutorial on [React Query](https://www.youtu
 - Formating of planet population in millions.
 - Use of `localStorage` to remember the last menu and page number visited upon app reload.
 
-The app is deployed to Netlify [here]().
+The app is deployed to Netlify [here](https://serene-wescoff-121912.netlify.app/).
